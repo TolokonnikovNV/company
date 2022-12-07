@@ -197,7 +197,8 @@ public class Company {
 
     public void firedFromJob(long jobId, long employeeId, double rate) {
         try (Connection con = connection) {
-            PreparedStatement ps = connection.prepareStatement("select * from job_appointments where job_id = ? and employee_id = ?;");
+            PreparedStatement ps = connection.prepareStatement("select * from job_appointments where job_id = ? and" +
+                    " employee_id = ?;");
             ps.setLong(1, jobId);
             ps.setLong(2, employeeId);
             ResultSet rs = ps.executeQuery();
@@ -209,7 +210,8 @@ public class Company {
                     ps.executeUpdate();
 
                 } else {
-                    ps = con.prepareStatement("update job_appointments set rate = ? where employee_id = ? and job_id = ?;");
+                    ps = con.prepareStatement("update job_appointments set rate = ? where employee_id = ? and" +
+                            " job_id = ?;");
                     ps.setDouble(1, rs.getDouble("rate") - rate);
                     ps.setLong(2, employeeId);
                     ps.setLong(3, jobId);
@@ -291,7 +293,8 @@ public class Company {
                     return;
                 }
             }
-            PreparedStatement ps = con.prepareStatement("insert into job (job_title, job_salary_by_one_rate, job_max_rate) values (?, ?, ?);");
+            PreparedStatement ps = con.prepareStatement("insert into job (job_title, job_salary_by_one_rate, " +
+                    "job_max_rate) values (?, ?, ?);");
             ps.setString(1, job.getJobTitle());
             ps.setDouble(2, job.getJobSalaryByOneRate());
             ps.setDouble(3, job.getJobMaxRate());
@@ -314,7 +317,8 @@ public class Company {
     private double getJobCurrentRateInternal(Connection connection, long jobId) {
         double rate = 0;
         try {
-            PreparedStatement ps = connection.prepareStatement("select * from job_appointments where employee_id = ?;");
+            PreparedStatement ps = connection.prepareStatement("select * from job_appointments where " +
+                    "employee_id = ?;");
             ps.setLong(1, jobId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -329,7 +333,8 @@ public class Company {
     private double getEmployeeCurrentRateInternal(Connection connection, long employeeId) {
         double rate = 0;
         try {
-            PreparedStatement ps = connection.prepareStatement("select * from job_appointments where employee_id = ?");
+            PreparedStatement ps = connection.prepareStatement("select * from job_appointments where " +
+                    "employee_id = ?");
             ps.setLong(1, employeeId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
